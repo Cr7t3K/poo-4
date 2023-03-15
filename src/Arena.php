@@ -9,6 +9,13 @@ class Arena
     private array $monsters;
     private Hero $hero;
 
+    public const DIRECTIONS = [
+        'N' => [0, -1],
+        'S' => [0, 1],
+        'E' => [1, 0],
+        'W' => [-1, 0],
+    ];
+
     private int $size = 10;
 
     public function __construct(Hero $hero, array $monsters)
@@ -68,5 +75,30 @@ class Arena
     public function getSize(): int
     {
         return $this->size;
+    }
+
+    public function move(Fighter $fighter, string $direction)
+    {
+        $x = $fighter->getX();
+        $y = $fighter->getY();
+        if (!key_exists($direction, self::DIRECTIONS)) {
+            throw new Exception('Unknown direction');
+        }
+
+        $destinationX = $x + self::DIRECTIONS[$direction][0];
+        $destinationY = $y + self::DIRECTIONS[$direction][1];
+
+        if ($destinationX < 0 || $destinationX >= $this->getSize() || $destinationY < 0 || $destinationY >= $this->getSize()) {
+            throw new Exception('Out of Map');
+        }
+
+        foreach ($this->getMonsters() as $monster) {
+            if ($monster->getX() == $destinationX && $monster->getY() == $destinationY) {
+                throw new Exception('Not free');
+            }
+        }
+
+        $fighter->setX($destinationX);
+        $fighter->setY($destinationY);
     }
 }
