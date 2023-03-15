@@ -106,6 +106,7 @@ class Arena
     {
         $monster = $this->getMonsters()[$id];
         if ($this->touchable($this->getHero(), $monster)) {
+            $this->getHero()->setExperience($this->getHero()->getExperience() + $monster->getExperience());
             $this->getHero()->fight($monster);
         } else {
             throw new Exception('Monster out of range');

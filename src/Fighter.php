@@ -15,6 +15,8 @@ class Fighter
     private int $y;
     protected float $range = 1;
 
+    protected int $experience = 1000;
+
     public function __construct(
         string $name,
         int $strength = 10,
@@ -100,7 +102,7 @@ class Fighter
      */
     public function getStrength(): int
     {
-        return $this->strength;
+        return $this->strength * Level::calculate($this->getExperience());
     }
 
     /**
@@ -117,7 +119,7 @@ class Fighter
      */
     public function getDexterity(): int
     {
-        return $this->dexterity;
+        return $this->dexterity * Level::calculate($this->getExperience());
     }
 
     /**
@@ -167,5 +169,17 @@ class Fighter
     public function getRange(): float
     {
         return $this->range;
+    }
+
+    public function getExperience()
+    {
+        return $this->experience;
+    }
+
+    public function setExperience($experience)
+    {
+        $this->experience = $experience;
+
+        return $this;
     }
 }
