@@ -111,10 +111,14 @@ class Arena
             throw new Exception('Monster out of range');
         }
 
-        if ($this->touchable($monster, $this->getHero())) {
-            $monster->fight($this->getHero());
+        if (!$monster->isAlive()) {
+            unset($this->monsters[$id]);
         } else {
-            throw new Exception('Hero out of range');
+            if ($this->touchable($monster, $this->getHero())) {
+                $monster->fight($this->getHero());
+            } else {
+                throw new Exception('Hero out of range');
+            }
         }
     }
 }
