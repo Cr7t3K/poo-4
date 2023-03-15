@@ -101,4 +101,20 @@ class Arena
         $fighter->setX($destinationX);
         $fighter->setY($destinationY);
     }
+
+    public function battle(int $id): void
+    {
+        $monster = $this->getMonsters()[$id];
+        if ($this->touchable($this->getHero(), $monster)) {
+            $this->getHero()->fight($monster);
+        } else {
+            throw new Exception('Monster out of range');
+        }
+
+        if ($this->touchable($monster, $this->getHero())) {
+            $monster->fight($this->getHero());
+        } else {
+            throw new Exception('Hero out of range');
+        }
+    }
 }
